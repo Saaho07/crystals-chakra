@@ -109,11 +109,29 @@ export function interpretAlignment(angles) {
   return { pattern: 'arc', intensity: clamp((maxGap - 120) / 90, 0, 1) }
 }
 
-// --- Generate the cosmic state for this moment ---
-export function generateCosmicState() {
-  const planetAngles = [0, 1, 2].map(() => Math.random() * 360)
-  const { pattern, intensity } = interpretAlignment(planetAngles)
-  return { planetAngles, activeConstellation: pattern, intensity }
+// --- Generate the cosmic state deterministically ---
+export function generateCosmicState(inputString) {
+  let random;
+  
+  if (!inputString) {
+    random = () => Math.random();
+  } else {
+    // Simple string hash
+    let hash = 0;
+    for (let i = 0; i < inputString.length; i++) {
+      hash = Math.imul(31, hash) + inputString.charCodeAt(i) | 0;
+    }
+    // Seed a simple PRNG (LCG)
+    let seed = Math.abs(hash) || 12345;
+    random = () => {
+      seed = (seed * 16807) % 2147483647;
+      return (seed - 1) / 2147483646;
+    };
+  }
+
+  const planetAngles = [0, 1, 2].map(() => random() * 360);
+  const { pattern, intensity } = interpretAlignment(planetAngles);
+  return { planetAngles, activeConstellation: pattern, intensity };
 }
 
 // --- Step 3: compose the reading from pattern + intensity + perspective ---
