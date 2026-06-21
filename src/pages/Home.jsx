@@ -1,12 +1,13 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { ArrowRight, Star, Shield, Brain, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import ServiceCard from '../components/ServiceCard';
-import Starfield from '../components/Starfield';
-import OrbitSystem from '../components/OrbitSystem';
+import CosmicBackground from '../components/CosmicBackground';
 import ReadingOverlay from '../components/ReadingOverlay';
 import ZodiacWheel from '../components/ZodiacWheel';
 import PageMeta from '../components/PageMeta';
+import AnimatedTitle from '../components/AnimatedTitle';
 import { generateCosmicState, generateReading, PATTERN_THEMES } from '../readingEngine';
 
 const TESTIMONIALS = [
@@ -78,13 +79,11 @@ export default function Home() {
   const [cosmicState, setCosmicState] = useState(null);
   const [readingLines, setReadingLines] = useState([]);
   const [userData, setUserData] = useState(null);
-  const [scrollY, setScrollY] = useState(0);
 
-  useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  // Calculate when the title animation finishes so subsequent elements can sequence after it
+  const heroTitle = 'Unlock Your Destiny';
+  const totalChars = heroTitle.length; // includes spaces
+  const titleAnimEnd = 0.3 + totalChars * 0.04 + 0.15; // startDelay + all letters + buffer
 
   const handleOpenModal = () => {
     setIsOpen(true);
@@ -107,46 +106,68 @@ export default function Home() {
     <div className="relative min-h-screen bg-chakra-bg overflow-x-hidden flex flex-col">
       <PageMeta path="/" />
 
-      {/* Background layer – parallax */}
-      <div
-        className="fixed inset-0 z-0"
-        style={{ transform: `translateY(${scrollY * 0.15}px)` }}
-      >
-        <Starfield />
-      </div>
-
-      <div className="fixed inset-0 z-[2] bg-gradient-to-b from-chakra-bg/30 via-chakra-surface/60 to-chakra-bg pointer-events-none" />
+      {/* Animated constellation background */}
+      <CosmicBackground />
 
       {/* Hero Section */}
-      <section className="relative z-10 pt-24 sm:pt-32 pb-16 sm:pb-20 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center min-h-[85vh]">
+      <section className="relative z-10 pt-[18vh] pb-[10vh] px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-start min-h-[85vh]">
         
-        <h1 className="text-4xl sm:text-5xl md:text-7xl font-serif font-bold text-center mb-4 sm:mb-6 tracking-tight">
-          Unlock Your <span className="gold-gradient-text">Destiny</span>
-        </h1>
+        <AnimatedTitle
+          text="Unlock Your Destiny"
+          goldWord="Destiny"
+          className="text-5xl sm:text-6xl md:text-8xl font-serif font-bold text-center mb-4 sm:mb-8 tracking-wide"
+          startDelay={0.3}
+        />
         
-        <p className="text-lg sm:text-xl md:text-2xl text-chakra-muted text-center max-w-2xl mb-8 sm:mb-12 leading-relaxed px-4">
+        <motion.p
+          className="text-lg sm:text-xl md:text-3xl text-chakra-muted text-center max-w-5xl mb-10 sm:mb-14 leading-relaxed px-4"
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: titleAnimEnd, ease: 'easeOut' }}
+        >
           Align, Heal, and Transform with precision astrological science. Discover your true path with our expert Kundli readings.
-        </p>
+        </motion.p>
 
-        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-center w-full sm:w-auto px-4 sm:px-0">
-          <button 
-            onClick={handleOpenModal}
-            className="w-full sm:w-auto bg-chakra-cyan hover:bg-chakra-blue text-chakra-bg font-bold py-4 px-8 rounded-full transition-all transform hover:scale-105 flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(37,169,186,0.3)] hover:shadow-[0_0_30px_rgba(20,70,125,0.5)]"
+        <motion.div
+          className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-center justify-center w-full sm:w-auto px-4 sm:px-0"
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: titleAnimEnd + 0.4, ease: 'easeOut' }}
+        >
+          {/* Snapshot Button Container with Tooltip */}
+          <div className="relative group w-full sm:w-[320px]">
+            {/* Desktop Tooltip */}
+            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 bg-chakra-surface/90 backdrop-blur-md border border-white/10 text-chakra-muted text-xs px-4 py-2 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none hidden sm:block whitespace-nowrap z-20">
+              ✨ This is a fun preview experience — your full Kundli uses your exact birth data
+              {/* Tooltip Arrow */}
+              <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-chakra-surface/90 border-b border-r border-white/10 rotate-45"></div>
+            </div>
+
+            <button 
+              onClick={handleOpenModal}
+              className="w-full bg-chakra-cyan hover:bg-chakra-blue text-chakra-bg font-bold py-4 px-8 rounded-full transition-all transform group-hover:scale-105 flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(37,169,186,0.3)] hover:shadow-[0_0_30px_rgba(20,70,125,0.5)]"
+            >
+              Get a Free Cosmic Snapshot <ArrowRight className="w-5 h-5 shrink-0" />
+            </button>
+          </div>
+
+          <Link 
+            to="/science" 
+            className="w-full sm:w-[320px] border border-white/10 bg-white/5 hover:bg-white/10 hover:border-chakra-cyan/30 text-white font-bold py-4 px-8 rounded-full transition-all transform hover:scale-105 flex items-center justify-center gap-2 shadow-sm text-center"
           >
-            Get a Free Cosmic Snapshot <ArrowRight className="w-5 h-5" />
-          </button>
-          <Link to="/science" className="text-chakra-text hover:text-chakra-gold py-3 sm:py-4 px-8 font-medium transition-colors flex items-center gap-2">
             Explore the Science
           </Link>
-        </div>
+        </motion.div>
 
-        {/* Cosmic Snapshot Disclaimer */}
-        <p className="mt-3 text-chakra-muted/60 text-xs text-center">
-          ✨ This is a fun preview experience — your full Kundli uses your exact birth data
-        </p>
+        {/* Mobile Subtext removed from here, moving to overlay */}
 
         {/* Trust Banner */}
-        <div className="mt-12 sm:mt-20 flex flex-wrap justify-center gap-6 sm:gap-8 md:gap-16 opacity-80">
+        <motion.div
+          className="mt-12 sm:mt-20 flex flex-wrap justify-center gap-6 sm:gap-8 md:gap-16"
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 0.8, y: 0 }}
+          transition={{ duration: 0.8, delay: titleAnimEnd + 1.0, ease: 'easeOut' }}
+        >
           <div className="flex flex-col items-center gap-2">
             <Star className="w-6 h-6 sm:w-8 sm:h-8 text-chakra-gold" />
             <span className="text-xs sm:text-sm font-semibold tracking-widest uppercase">10,000+ Customers</span>
@@ -159,21 +180,22 @@ export default function Home() {
             <Brain className="w-6 h-6 sm:w-8 sm:h-8 text-chakra-gold" />
             <span className="text-xs sm:text-sm font-semibold tracking-widest uppercase">Expert Astrologers</span>
           </div>
-        </div>
+        </motion.div>
       </section>
 
-      {/* Services Preview Section — with zodiac wheel behind */}
+      {/* Services Preview Section — zodiac wheel flush with viewport edges */}
       <section className="relative z-10 py-16 sm:py-24 bg-chakra-surface/50 border-t border-white/5 backdrop-blur-sm overflow-hidden">
-        {/* Large zodiac wheel behind cards, slow rotation */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
-          <ZodiacWheel size={900} className="hidden sm:block" />
-          <ZodiacWheel size={500} className="block sm:hidden" />
+        {/* Zodiac wheel spanning full viewport width so the circle border is flush with screen edges */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20 overflow-visible">
+          <div className="w-[100vw] h-[100vw] flex items-center justify-center">
+            <ZodiacWheel size={2000} className="min-w-[100vw] min-h-[100vw]" />
+          </div>
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10 sm:mb-16">
             <h2 className="text-3xl sm:text-4xl font-serif font-bold mb-4">Reveal What Your Stars Say</h2>
-            <p className="text-chakra-muted max-w-2xl mx-auto text-sm sm:text-base">Your future is already written, it's time to understand it. Choose from our specialized, deeply personalized Kundli readings.</p>
+            <p className="text-chakra-muted max-w-3xl mx-auto text-sm sm:text-base">Your future is already written, it's time to understand it. Choose from our specialized, deeply personalized Kundli readings.</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
@@ -220,7 +242,7 @@ export default function Home() {
 
       {/* Testimonials Section */}
       <section className="relative z-10 py-16 sm:py-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-[1200px] mx-auto">
           <div className="text-center mb-10 sm:mb-16">
             <h2 className="text-3xl sm:text-4xl font-serif font-bold mb-4">What Our Clients Say</h2>
             <p className="text-chakra-muted text-sm sm:text-base">Real experiences from people who discovered their cosmic blueprint.</p>

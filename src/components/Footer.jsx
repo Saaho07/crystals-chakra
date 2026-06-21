@@ -4,7 +4,7 @@ import { WHATSAPP_DISPLAY, SUPPORT_EMAIL, WHATSAPP_NUMBER } from '../constants';
 
 export default function Footer() {
   return (
-    <footer className="bg-chakra-surface border-t border-white/10 pt-12 sm:pt-16 pb-8 mt-20">
+    <footer className="relative z-10 bg-chakra-surface border-t border-white/10 pt-12 sm:pt-16 pb-8 mt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 sm:gap-12 mb-12">
           <div className="col-span-1 sm:col-span-2">
@@ -20,9 +20,9 @@ export default function Footer() {
           <div>
             <h3 className="text-white font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
-              <li><Link to="/services" className="text-chakra-muted hover:text-chakra-cyan text-sm transition-colors">Kundli Services</Link></li>
-              <li><Link to="/science" className="text-chakra-muted hover:text-chakra-cyan text-sm transition-colors">Science of Astrology</Link></li>
-              <li><Link to="/shop" className="text-chakra-muted hover:text-chakra-cyan text-sm transition-colors">Shop</Link></li>
+              <li><Link to="/services" onClick={() => window.scrollTo(0, 0)} className="text-chakra-muted hover:text-chakra-cyan text-sm transition-colors">Kundli Services</Link></li>
+              <li><Link to="/science" onClick={() => window.scrollTo(0, 0)} className="text-chakra-muted hover:text-chakra-cyan text-sm transition-colors">Science of Astrology</Link></li>
+              <li><Link to="/shop" onClick={() => window.scrollTo(0, 0)} className="text-chakra-muted hover:text-chakra-cyan text-sm transition-colors">Shop</Link></li>
             </ul>
           </div>
 

@@ -148,8 +148,8 @@ export default function ReadingOverlay({
                     {LOADING_TEXTS[loadingStep]}
                   </motion.p>
                   
-                  <p className="text-xs text-chakra-muted/60 italic mt-6">
-                    We never store this data. It is only used for calculation.
+                  <p className="text-xs text-chakra-muted/60 italic mt-6 text-center max-w-[280px] mx-auto">
+                    ✨ This is a fun preview experience — your full Kundli uses your exact birth data. We never store this data.
                   </p>
                 </motion.div>
               )}
