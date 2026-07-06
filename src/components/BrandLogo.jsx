@@ -1,16 +1,17 @@
 export default function BrandLogo({ className = "", size = "md" }) {
-  // Sizes mapping
+  // Unified size mapping — no override hacks needed
   const sizes = {
-    sm: "w-12 h-12", // Increased size for navbar
+    xs: "w-8 h-8",
+    sm: "w-10 h-10",
     md: "w-24 h-24",
     lg: "w-40 h-40"
   };
 
-  // Filter scale mapping
   const filters = {
+    xs: "drop-shadow(0px 0px 1px rgba(37,169,186,0.4)) drop-shadow(0px 0px 3px rgba(20,70,125,0.3))",
     sm: "drop-shadow(0px 0px 2px rgba(37,169,186,0.5)) drop-shadow(0px 0px 5px rgba(20,70,125,0.4))",
-    md: "drop-shadow(0px 0px 10px rgba(37,169,186,0.4)) drop-shadow(0px 0px 20px rgba(20,70,125,0.3))",
-    lg: "drop-shadow(0px 0px 15px rgba(37,169,186,0.4)) drop-shadow(0px 0px 30px rgba(20,70,125,0.3))"
+    md: "drop-shadow(0px 0px 8px rgba(37,169,186,0.35)) drop-shadow(0px 0px 16px rgba(20,70,125,0.25))",
+    lg: "drop-shadow(0px 0px 12px rgba(37,169,186,0.35)) drop-shadow(0px 0px 24px rgba(20,70,125,0.25))"
   };
 
   const currentFilter = filters[size] || filters.md;
@@ -18,15 +19,15 @@ export default function BrandLogo({ className = "", size = "md" }) {
 
   return (
     <div 
-      className={`relative flex items-center justify-center ${currentSize} ${className} group animate-logo-3d-spin`}
+      className={`relative flex items-center justify-center ${currentSize} ${className} group`}
       style={{ 
         filter: currentFilter,
-        willChange: 'transform'
+        willChange: 'filter'
       }}
     >
-      {/* 3D Shine overlay that moves on hover */}
+      {/* Hover shine overlay */}
       <div className="absolute inset-0 z-50 pointer-events-none overflow-hidden rounded-lg">
-        <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/40 to-transparent -translate-x-full group-hover:animate-[shine_1.5s_ease-in-out]" />
+        <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/30 to-transparent -translate-x-full group-hover:animate-[shine_1.5s_ease-in-out]" />
       </div>
 
       <svg 

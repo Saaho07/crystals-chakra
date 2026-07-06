@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { ArrowRight, Star, Shield, Brain, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -57,16 +57,16 @@ const FAQ_ITEMS = [
 function FAQItem({ item }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="border-b border-white/10">
+    <div className="border-b border-white/10 last:border-b-0">
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center justify-between w-full py-5 text-left"
+        className="flex items-center justify-between w-full py-5 sm:py-6 text-left group/faq"
       >
-        <span className="text-base sm:text-lg font-medium text-white pr-4">{item.q}</span>
+        <span className="text-base sm:text-lg font-medium text-white pr-4 group-hover/faq:text-chakra-cyan transition-colors">{item.q}</span>
         <ChevronDown className={`w-5 h-5 text-chakra-cyan shrink-0 transition-transform duration-300 ${open ? 'rotate-180' : ''}`} />
       </button>
       <div
-        className={`overflow-hidden transition-all duration-300 ${open ? 'max-h-40 pb-5' : 'max-h-0'}`}
+        className={`overflow-hidden transition-all duration-300 ease-out ${open ? 'max-h-40 pb-5' : 'max-h-0'}`}
       >
         <p className="text-chakra-muted text-sm sm:text-base leading-relaxed">{item.a}</p>
       </div>
@@ -82,8 +82,8 @@ export default function Home() {
 
   // Calculate when the title animation finishes so subsequent elements can sequence after it
   const heroTitle = 'Unlock Your Destiny';
-  const totalChars = heroTitle.length; // includes spaces
-  const titleAnimEnd = 0.3 + totalChars * 0.04 + 0.15; // startDelay + all letters + buffer
+  const totalChars = heroTitle.length;
+  const titleAnimEnd = 0.3 + 0.8 - 0.2; // startDelay + text anim - overlap buffer
 
   const handleOpenModal = () => {
     setIsOpen(true);
@@ -110,7 +110,7 @@ export default function Home() {
       <CosmicBackground />
 
       {/* Hero Section */}
-      <section className="relative z-10 pt-[18vh] pb-[10vh] px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-start min-h-[85vh]">
+      <section className="relative z-10 pt-[18vh] pb-[10vh] px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-start min-h-screen">
         
         <AnimatedTitle
           text="Unlock Your Destiny"
@@ -120,10 +120,10 @@ export default function Home() {
         />
         
         <motion.p
-          className="text-lg sm:text-xl md:text-3xl text-chakra-muted text-center max-w-5xl mb-10 sm:mb-14 leading-relaxed px-4"
+          className="text-lg sm:text-xl md:text-2xl text-chakra-muted text-center max-w-4xl mb-10 sm:mb-14 leading-relaxed px-4"
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: titleAnimEnd, ease: 'easeOut' }}
+          transition={{ duration: 0.4, delay: titleAnimEnd, ease: 'easeOut' }}
         >
           Align, Heal, and Transform with precision astrological science. Discover your true path with our expert Kundli readings.
         </motion.p>
@@ -132,7 +132,7 @@ export default function Home() {
           className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-center justify-center w-full sm:w-auto px-4 sm:px-0"
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: titleAnimEnd + 0.4, ease: 'easeOut' }}
+          transition={{ duration: 0.4, delay: titleAnimEnd + 0.15, ease: 'easeOut' }}
         >
           {/* Snapshot Button Container with Tooltip */}
           <div className="relative group w-full sm:w-[320px]">
@@ -159,14 +159,12 @@ export default function Home() {
           </Link>
         </motion.div>
 
-        {/* Mobile Subtext removed from here, moving to overlay */}
-
         {/* Trust Banner */}
         <motion.div
           className="mt-12 sm:mt-20 flex flex-wrap justify-center gap-6 sm:gap-8 md:gap-16"
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 0.8, y: 0 }}
-          transition={{ duration: 0.8, delay: titleAnimEnd + 1.0, ease: 'easeOut' }}
+          transition={{ duration: 0.6, delay: titleAnimEnd + 0.5, ease: 'easeOut' }}
         >
           <div className="flex flex-col items-center gap-2">
             <Star className="w-6 h-6 sm:w-8 sm:h-8 text-chakra-gold" />
@@ -183,19 +181,19 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* Services Preview Section — zodiac wheel flush with viewport edges */}
-      <section className="relative z-10 py-16 sm:py-24 bg-chakra-surface/50 border-t border-white/5 backdrop-blur-sm overflow-hidden">
-        {/* Zodiac wheel spanning full viewport width so the circle border is flush with screen edges */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20 overflow-visible">
+      {/* Services Preview Section — transparent, no separate bg */}
+      <section className="relative z-10 py-20 sm:py-28 bg-chakra-surface/50 border-t border-b border-white/5 backdrop-blur-sm overflow-hidden">
+        {/* Zodiac wheel spanning full viewport width */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.08] overflow-visible">
           <div className="w-[100vw] h-[100vw] flex items-center justify-center">
             <ZodiacWheel size={2000} className="min-w-[100vw] min-h-[100vw]" />
           </div>
         </div>
 
         <div className="relative max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-10 sm:mb-16">
-            <h2 className="text-3xl sm:text-4xl font-serif font-bold mb-4">Reveal What Your Stars Say</h2>
-            <p className="text-chakra-muted max-w-3xl mx-auto text-sm sm:text-base">Your future is already written, it's time to understand it. Choose from our specialized, deeply personalized Kundli readings.</p>
+          <div className="text-center mb-12 sm:mb-20">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold mb-5">Reveal What Your Stars Say</h2>
+            <p className="text-chakra-muted max-w-3xl mx-auto text-base sm:text-lg">Your future is already written, it's time to understand it. Choose from our specialized, deeply personalized Kundli readings.</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
@@ -232,20 +230,20 @@ export default function Home() {
             />
           </div>
           
-          <div className="mt-10 sm:mt-12 text-center">
-            <Link to="/services" className="text-chakra-gold hover:text-chakra-goldLight font-semibold inline-flex items-center gap-2 transition-colors">
+          <div className="mt-10 sm:mt-14 text-center">
+            <Link to="/services" className="text-chakra-gold hover:text-chakra-goldLight font-semibold inline-flex items-center gap-2 transition-colors text-base sm:text-lg">
               View all services details <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="relative z-10 py-16 sm:py-24 px-4 sm:px-6 lg:px-8">
+      {/* Testimonials Section — transparent, no separate bg */}
+      <section className="relative z-10 py-20 sm:py-28 px-4 sm:px-6 lg:px-8">
         <div className="max-w-[1200px] mx-auto">
-          <div className="text-center mb-10 sm:mb-16">
-            <h2 className="text-3xl sm:text-4xl font-serif font-bold mb-4">What Our Clients Say</h2>
-            <p className="text-chakra-muted text-sm sm:text-base">Real experiences from people who discovered their cosmic blueprint.</p>
+          <div className="text-center mb-12 sm:mb-20">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold mb-5">What Our Clients Say</h2>
+            <p className="text-chakra-muted text-base sm:text-lg">Real experiences from people who discovered their cosmic blueprint.</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
@@ -256,7 +254,7 @@ export default function Home() {
                     <Star key={j} className="w-4 h-4 text-chakra-gold fill-chakra-gold" />
                   ))}
                 </div>
-                <p className="text-chakra-text/90 text-sm leading-relaxed flex-1 mb-6">"{t.text}"</p>
+                <p className="text-chakra-text/90 text-sm sm:text-base leading-relaxed flex-1 mb-6">"{t.text}"</p>
                 <div className="border-t border-white/10 pt-4">
                   <p className="text-white font-semibold text-sm">{t.name}</p>
                   <p className="text-chakra-muted text-xs">{t.city}</p>
@@ -267,12 +265,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section className="relative z-10 py-16 sm:py-24 bg-chakra-surface/30 border-t border-white/5">
+      {/* FAQ Section — transparent, no separate bg */}
+      <section className="relative z-10 py-20 sm:py-28">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-10 sm:mb-16">
-            <h2 className="text-3xl sm:text-4xl font-serif font-bold mb-4">Frequently Asked Questions</h2>
-            <p className="text-chakra-muted text-sm sm:text-base">Everything you need to know before ordering your reading.</p>
+          <div className="text-center mb-12 sm:mb-20">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold mb-5">Frequently Asked Questions</h2>
+            <p className="text-chakra-muted text-base sm:text-lg">Everything you need to know before ordering your reading.</p>
           </div>
 
           <div className="glass-panel rounded-2xl p-4 sm:p-8">

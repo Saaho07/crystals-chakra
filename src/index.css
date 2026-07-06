@@ -6,25 +6,28 @@
 
 html, body, #root {
   min-height: 100%;
+  overscroll-behavior: none;
 }
 
 body {
   margin: 0;
-  background: #0a0514; /* chakra-bg */
+  background: #0a0514;
   color: #F8FAFC;
   font-family: 'Inter', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
   overscroll-behavior: none;
   -webkit-user-select: none;
   user-select: none;
 }
 
+/* Hide default cursor on pointer devices — custom cursor replaces it */
 @media (pointer: fine) {
   body, a, button, input, textarea, [role="button"] {
     cursor: none !important;
   }
 }
-
 
 @layer utilities {
   .glass-panel {
@@ -53,23 +56,23 @@ body {
 /* Navbar pill button styles */
 .nav-pill {
   position: relative;
-  padding: 0.4rem 1.25rem;
+  padding: 0.55rem 1.5rem;
   border-radius: 9999px;
-  font-size: 0.875rem;
+  font-size: 0.938rem;
   font-weight: 500;
   color: #94A3B8;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   letter-spacing: 0.02em;
 }
 
 .nav-pill:hover {
   color: #25A9BA;
-  background: rgba(37, 169, 186, 0.12);
+  background: rgba(37, 169, 186, 0.1);
   border-color: rgba(37, 169, 186, 0.25);
-  box-shadow: 0 0 12px rgba(37, 169, 186, 0.15), inset 0 0 12px rgba(37, 169, 186, 0.05);
+  box-shadow: 0 0 12px rgba(37, 169, 186, 0.12), inset 0 0 12px rgba(37, 169, 186, 0.04);
   transform: translateY(-1px);
 }
 
@@ -79,11 +82,12 @@ body {
 
 .nav-pill.active {
   color: #25A9BA;
-  background: rgba(37, 169, 186, 0.15);
+  background: rgba(37, 169, 186, 0.12);
   border-color: rgba(37, 169, 186, 0.3);
-  box-shadow: 0 0 16px rgba(37, 169, 186, 0.2), inset 0 0 8px rgba(37, 169, 186, 0.06);
+  box-shadow: 0 0 16px rgba(37, 169, 186, 0.15), inset 0 0 8px rgba(37, 169, 186, 0.05);
 }
 
+/* Respect reduced motion preferences */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -92,19 +96,9 @@ body {
   }
 }
 
-@keyframes logo-3d-spin {
-  0% { transform: perspective(500px) rotateY(-10deg) rotateX(5deg); }
-  50% { transform: perspective(500px) rotateY(10deg) rotateX(-5deg); }
-  100% { transform: perspective(500px) rotateY(-10deg) rotateX(5deg); }
-}
-
 @keyframes zodiac-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
-}
-
-.animate-logo-3d-spin {
-  animation: logo-3d-spin 6s ease-in-out infinite;
 }
 
 .animate-zodiac-spin {
@@ -117,17 +111,5 @@ body {
 }
 
 .animate-fade-in-up {
-  animation: fade-in-up 0.8s ease-out forwards;
-}
-
-/* Subtle, performant radial noise using repeating gradients instead of feTurbulence */
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  pointer-events: none;
-  opacity: 0.05;
-  background-image: radial-gradient(circle at center, transparent 0%, rgba(255, 255, 255, 0.4) 100%);
-  background-size: 4px 4px;
+  animation: fade-in-up 0.5s ease-out forwards;
 }

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useCallback, memo } from 'react';
+import { cursorPos } from './CosmicBackground';
 
 // Lightweight cursor glow using refs + RAF instead of framer-motion springs
 const CursorGlow = memo(function CursorGlow() {
@@ -9,12 +10,17 @@ const CursorGlow = memo(function CursorGlow() {
   const hovering = useRef(false);
   const rafId = useRef(null);
   const visible = useRef(false);
+  const lastTime = useRef(0);
 
-  // Single RAF loop — much cheaper than framer-motion springs
-  const tick = useCallback(() => {
-    const lerp = 0.15;
-    ringPos.current.x += (pos.current.x - ringPos.current.x) * lerp;
-    ringPos.current.y += (pos.current.y - ringPos.current.y) * lerp;
+  // Single RAF loop — framerate-independent for 120hz smoothness
+  const tick = useCallback((timestamp) => {
+    const dt = lastTime.current ? Math.min((timestamp - lastTime.current) / 1000, 0.05) : 0.016;
+    lastTime.current = timestamp;
+
+    // Framerate-independent lerp — feels identical at 60/120/144hz
+    const ringLerp = 1 - Math.pow(0.001, dt); // ~0.22 at 60fps, proportionally faster at 120fps
+    ringPos.current.x += (pos.current.x - ringPos.current.x) * ringLerp;
+    ringPos.current.y += (pos.current.y - ringPos.current.y) * ringLerp;
 
     if (ringRef.current) {
       const size = hovering.current ? 48 : 28;
@@ -36,6 +42,9 @@ const CursorGlow = memo(function CursorGlow() {
     const handleMouseMove = (e) => {
       pos.current.x = e.clientX;
       pos.current.y = e.clientY;
+      // Also update shared cursor position for CosmicBackground parallax
+      cursorPos.x = e.clientX / window.innerWidth;
+      cursorPos.y = e.clientY / window.innerHeight;
       if (!visible.current) {
         visible.current = true;
         if (ringRef.current) ringRef.current.style.opacity = '1';
@@ -77,7 +86,7 @@ const CursorGlow = memo(function CursorGlow() {
           width: 28,
           height: 28,
           opacity: 0,
-          transition: 'width 0.2s, height 0.2s, background-color 0.2s',
+          transition: 'width 0.15s, height 0.15s, background-color 0.15s',
           willChange: 'transform',
         }}
       />
@@ -88,7 +97,7 @@ const CursorGlow = memo(function CursorGlow() {
           width: 6,
           height: 6,
           opacity: 0,
-          transition: 'opacity 0.2s',
+          transition: 'opacity 0.15s',
           willChange: 'transform',
         }}
       />

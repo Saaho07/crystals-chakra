@@ -29,9 +29,10 @@ export default function AnimatedTitle({ text, className = "", goldWord = "", sta
             initial={{ y: '100%' }}
             animate={{ y: '0%' }}
             transition={{
-              duration: 0.6,
-              delay: startDelay + l.index * 0.04,
-              ease: [0.16, 1, 0.3, 1], // snappy swipe-up ease
+              duration: 0.4,
+              // Adaptive per-letter delay: targets exactly 0.8s total regardless of text length
+              delay: startDelay + l.index * Math.max(0.001, 0.4 / Math.max(text.length, 1)),
+              ease: [0.16, 1, 0.3, 1],
             }}
           >
             {l.char}

@@ -1,109 +1,170 @@
-import { useMemo, memo, useEffect, useRef } from 'react'
+import { useEffect, useRef, memo } from 'react'
 
-// Fast seeded PRNG — no dependencies
+/**
+ * Canvas-based star field inspired by an Alaskan night sky.
+ * Dense, crisp points of light with subtle, ethereal constellations.
+ * Highly performant.
+ */
+
+export const cursorPos = { x: 0.5, y: 0.5 }
+
 function seededRandom(seed) {
   let s = seed
   return () => {
-    s = (s * 9301 + 49297) % 233280
-    return s / 233280
+    s = (s * 16807 + 0) % 2147483647
+    return (s - 1) / 2147483646
   }
 }
 
-const CONSTELLATIONS = [
-  { name: 'orion', stars: [[8, 12], [12, 18], [10, 25], [6, 25], [9, 32], [11, 38], [7, 40], [14, 40]], links: [[0, 1], [1, 2], [1, 3], [2, 4], [3, 4], [4, 5], [4, 6], [4, 7]], drift: 0 },
-  { name: 'cassiopeia', stars: [[72, 8], [78, 14], [83, 8], [88, 15], [93, 9]], links: [[0, 1], [1, 2], [2, 3], [3, 4]], drift: 1 },
-  { name: 'dipper', stars: [[55, 72], [62, 70], [68, 74], [72, 80], [78, 82], [80, 88], [72, 88]], links: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 3]], drift: 2 },
-  { name: 'scorpius', stars: [[22, 62], [26, 58], [30, 55], [35, 56], [38, 60], [40, 66], [38, 72], [34, 76]], links: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7]], drift: 3 },
-  { name: 'leo', stars: [[82, 35], [87, 32], [90, 38], [86, 42], [80, 44], [76, 40]], links: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 0]], drift: 4 },
-  { name: 'lyra', stars: [[45, 15], [50, 10], [55, 16], [50, 20]], links: [[0, 1], [1, 2], [2, 3], [3, 0]], drift: 5 },
-  { name: 'gemini', stars: [[18, 42], [22, 38], [20, 48], [24, 44], [17, 52]], links: [[0, 1], [0, 2], [1, 3], [2, 4], [2, 3]], drift: 6 },
-  { name: 'cygnus', stars: [[58, 45], [62, 40], [66, 45], [62, 50], [62, 35]], links: [[0, 1], [1, 2], [1, 4], [1, 3]], drift: 7 },
-]
+const STAR_COUNT = 450
 
-const CosmicBackground = memo(function CosmicBackground({ showConstellations = true }) {
-  const containerRef = useRef(null)
+// Constellations removed to standalone Constellations.jsx
 
-  // Independent scroll listener — zero React renders on scroll!
+function generateStars(count) {
+  const rand = seededRandom(424242)
+  const stars = new Array(count)
+  for (let i = 0; i < count; i++) {
+    const depth = rand()
+    // Smaller, crisper stars (no boba balls)
+    const baseSize = 0.3 + (1 - depth) * 1.0
+    const baseOpacity = 0.2 + (1 - depth) * 0.8
+    const colourRoll = rand()
+    let r, g, b
+    
+    if (colourRoll < 0.6) {
+      r = 240 + rand() * 15; g = 245 + rand() * 10; b = 255;
+    } else if (colourRoll < 0.85) {
+      r = 190 + rand() * 30; g = 220 + rand() * 35; b = 255;
+    } else {
+      r = 255; g = 240 + rand() * 15; b = 220 + rand() * 20;
+    }
+    
+    stars[i] = {
+      x: rand(), y: rand(), depth, baseSize, baseOpacity,
+      r: Math.round(r), g: Math.round(g), b: Math.round(b),
+      twinklePhase: rand() * Math.PI * 2,
+      twinkleSpeed: 0.2 + rand() * 1.5,
+      twinkles: rand() > 0.3,
+    }
+  }
+  return stars
+}
+
+const bgStars = generateStars(STAR_COUNT)
+
+const CosmicBackground = memo(function CosmicBackground() {
+  const canvasRef = useRef(null)
+  const rafRef = useRef(null)
+  const scrollYRef = useRef(0)
+  const timeRef = useRef(0)
+  const lastFrameRef = useRef(0)
+  const smoothCursor = useRef({ x: 0.5, y: 0.5 })
+
   useEffect(() => {
-    let ticking = false;
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          if (containerRef.current) {
-            containerRef.current.style.transform = `translateY(${window.scrollY * 0.15}px)`;
-          }
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d', { alpha: false })
 
-  const stars = useMemo(() => {
-    const rand = seededRandom(42)
-    return Array.from({ length: 100 }, (_, i) => ({
-      id: i,
-      x: rand() * 100,
-      y: rand() * 100,
-      size: rand() * 0.14 + 0.04,
-      opacity: rand() * 0.5 + 0.15,
-      twinkle: rand() > 0.85,
-      delay: rand() * 6,
-      duration: 3 + rand() * 4,
-    }))
+    let w = 0, h = 0
+    const resize = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2)
+      w = window.innerWidth
+      h = window.innerHeight
+      canvas.width = w * dpr
+      canvas.height = h * dpr
+      canvas.style.width = `${w}px`
+      canvas.style.height = `${h}px`
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+    }
+    resize()
+    window.addEventListener('resize', resize, { passive: true })
+
+    let scrollTicking = false
+    const onScroll = () => {
+      if (!scrollTicking) {
+        scrollTicking = true
+        requestAnimationFrame(() => {
+          scrollYRef.current = window.scrollY
+          scrollTicking = false
+        })
+      }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+
+    const onMouseMove = (e) => {
+      cursorPos.x = e.clientX / w
+      cursorPos.y = e.clientY / h
+    }
+    window.addEventListener('mousemove', onMouseMove, { passive: true })
+
+    const render = (timestamp) => {
+      const dt = lastFrameRef.current ? Math.min((timestamp - lastFrameRef.current) / 1000, 0.05) : 0.016
+      lastFrameRef.current = timestamp
+      timeRef.current += dt
+
+      const cLerp = 1 - Math.pow(0.05, dt)
+      smoothCursor.current.x += (cursorPos.x - smoothCursor.current.x) * cLerp
+      smoothCursor.current.y += (cursorPos.y - smoothCursor.current.y) * cLerp
+
+      const cx = smoothCursor.current.x - 0.5
+      const cy = smoothCursor.current.y - 0.5
+      const scrollOffset = scrollYRef.current * 0.06
+      const t = timeRef.current
+
+      // Very dark icy night sky
+      ctx.fillStyle = '#040208'
+      ctx.fillRect(0, 0, w, h)
+
+      // Layer 1: Background stars
+      // Batch rendering by colour to reduce state changes
+      for (let i = 0; i < STAR_COUNT; i++) {
+        const s = bgStars[i]
+        // Only the largest forefront stars (depth < 0.3) move with the cursor, the rest stay perfectly still
+        const parallaxStrength = s.depth < 0.3 ? (0.3 - s.depth) * 80 : 0
+        const px = s.x * w + cx * parallaxStrength
+        const py = s.y * h + cy * parallaxStrength * 0.6 - scrollOffset * (0.2 + s.depth * 0.4)
+
+        if (py < -5 || py > h + 5 || px < -5 || px > w + 5) continue
+
+        let opacity = s.baseOpacity
+        if (s.twinkles) {
+          opacity *= 0.6 + Math.sin(t * s.twinkleSpeed + s.twinklePhase) * 0.4
+        }
+
+        // Draw crisp star point
+        ctx.globalAlpha = opacity
+        ctx.fillStyle = `rgb(${s.r},${s.g},${s.b})`
+        
+        // Fast rectangle drawing for tiny background stars instead of arc
+        if (s.baseSize < 0.8) {
+          ctx.fillRect(px, py, s.baseSize * 2, s.baseSize * 2)
+        } else {
+          ctx.beginPath()
+          ctx.arc(px, py, s.baseSize, 0, Math.PI * 2)
+          ctx.fill()
+        }
+      }
+
+      ctx.globalAlpha = 1
+      rafRef.current = requestAnimationFrame(render)
+    }
+
+    rafRef.current = requestAnimationFrame(render)
+
+    return () => {
+      window.removeEventListener('resize', resize)
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('mousemove', onMouseMove)
+      if (rafRef.current) cancelAnimationFrame(rafRef.current)
+    }
   }, [])
 
-  const constellationElements = useMemo(() => {
-    if (!showConstellations) return null
-    return CONSTELLATIONS.map((c) => (
-      <g
-        key={c.name}
-        className="animate-constellation-drift"
-        style={{
-          animationDelay: `${c.drift * 2.5}s`,
-          animationDuration: `${18 + c.drift * 3}s`,
-        }}
-      >
-        {c.links.map(([a, b], i) => (
-          <line
-            key={i}
-            x1={c.stars[a][0]}
-            y1={c.stars[a][1]}
-            x2={c.stars[b][0]}
-            y2={c.stars[b][1]}
-            stroke="#25A9BA"
-            strokeWidth="0.06"
-            strokeLinecap="round"
-            opacity="0.35"
-          />
-        ))}
-        {c.stars.map(([x, y], i) => (
-          <circle key={`s${i}`} cx={x} cy={y} r={0.2} fill="#E6EDF3" opacity={0.85} />
-        ))}
-      </g>
-    ))
-  }, [showConstellations])
-
   return (
-    <div
-      ref={containerRef}
-      className="fixed inset-0 z-0 overflow-hidden pointer-events-none"
-      style={{ willChange: 'transform' }}
-    >
-      <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="xMidYMid slice" viewBox="0 0 100 100" aria-hidden="true">
-        {stars.map((s) => (
-          <circle
-            key={s.id} cx={s.x} cy={s.y} r={s.size} fill="#E6EDF3" opacity={s.opacity}
-            className={s.twinkle ? 'animate-twinkle' : undefined}
-            style={s.twinkle ? { animationDelay: `${s.delay}s`, animationDuration: `${s.duration}s` } : undefined}
-          />
-        ))}
-        {constellationElements}
-      </svg>
-      <div className="absolute inset-0 bg-gradient-to-b from-chakra-bg/30 via-chakra-surface/60 to-chakra-bg pointer-events-none" />
-    </div>
+    <canvas
+      ref={canvasRef}
+      className="fixed inset-0 z-0 pointer-events-none"
+      aria-hidden="true"
+    />
   )
 })
 

@@ -4,7 +4,6 @@ import PageMeta from '../components/PageMeta';
 import CosmicBackground from '../components/CosmicBackground';
 import ZodiacWheel from '../components/ZodiacWheel';
 import AnimatedTitle from '../components/AnimatedTitle';
-import BrandLogo from '../components/BrandLogo';
 
 const TEASER_PRODUCTS = [
   {
@@ -48,7 +47,7 @@ export default function Shop() {
       />
 
       {/* Animated constellation background */}
-      <CosmicBackground showConstellations={false} />
+      <CosmicBackground />
 
       {/* Large ZodiacWheel background — centered, large enough for curves visible on sides */}
       <div className="fixed inset-0 z-[1] pointer-events-none flex items-center justify-center overflow-hidden">
@@ -62,22 +61,22 @@ export default function Shop() {
       {/* Content */}
       <div className="relative z-10 pt-20 sm:pt-28 pb-24 px-4 sm:px-6 lg:px-8 max-w-[1400px] mx-auto w-full min-h-[80vh]">
         <div className="text-center mb-12 sm:mb-16">
-          <BrandLogo size="md" className="mx-auto mb-6 sm:mb-8" />
 
           <AnimatedTitle
             text="Crystals & Tools"
-            className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold mb-4 sm:mb-6"
+            goldWord="Tools"
+            className="text-5xl sm:text-6xl md:text-8xl font-serif font-bold text-center mb-4 sm:mb-8 tracking-wide"
             startDelay={0.1}
           />
 
-          <p className="text-lg sm:text-xl text-chakra-muted max-w-3xl mx-auto mb-8 sm:mb-12 animate-fade-in-up" style={{ animationDelay: '0.9s', animationFillMode: 'both' }}>
+          <p className="text-lg sm:text-xl text-chakra-muted max-w-3xl mx-auto mb-8 sm:mb-12 animate-fade-in-up" style={{ animationDelay: '0.6s', animationFillMode: 'both' }}>
             We're curating a collection of high-vibration crystal wristbands matched to your specific planetary alignments. Be the first to know when we launch.
           </p>
         </div>
 
-        <div className="animate-fade-in-up" style={{ animationDelay: '1.2s', animationFillMode: 'both' }}>
+        <div className="animate-fade-in-up" style={{ animationDelay: '0.9s', animationFillMode: 'both' }}>
           {/* Waitlist Form */}
-          <div className="max-w-md mx-auto">
+          <div className="max-w-lg mx-auto">
             {submitted ? (
               <div className="glass-panel rounded-2xl p-6 sm:p-8 text-center">
                 <Bell className="w-8 h-8 text-chakra-gold mx-auto mb-3" />

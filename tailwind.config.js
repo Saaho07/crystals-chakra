@@ -5,13 +5,13 @@ export default {
     extend: {
       colors: {
         chakra: {
-          bg: '#0a0514', // Deep dark purple/black
-          surface: '#150a21', // Dark purple surface
-          ring: '#2a1b42', // Slightly lighter purple
-          cyan: '#25A9BA', // Cyan from logo
-          blue: '#14467D', // Deep blue from logo
-          gold: '#D4AF37', // Gold from ads
-          goldLight: '#F3E5AB', // Light gold
+          bg: '#0a0514',
+          surface: '#150a21',
+          ring: '#2a1b42',
+          cyan: '#25A9BA',
+          blue: '#14467D',
+          gold: '#D4AF37',
+          goldLight: '#F3E5AB',
           text: '#F8FAFC',
           muted: '#94A3B8',
         },
@@ -33,13 +33,6 @@ export default {
           '0%, 100%': { opacity: '0', transform: 'scale(0.7)' },
           '45%, 55%': { opacity: '0.2', transform: 'scale(1.2)' },
         },
-        'constellation-drift': {
-          '0%': { transform: 'translate(0, 0)' },
-          '25%': { transform: 'translate(2px, -3px)' },
-          '50%': { transform: 'translate(-1px, 2px)' },
-          '75%': { transform: 'translate(3px, 1px)' },
-          '100%': { transform: 'translate(0, 0)' },
-        },
         'glow-line-pulse': {
           '0%, 100%': { opacity: '0.3', strokeWidth: '1.5' },
           '50%': { opacity: '0.7', strokeWidth: '2.5' },
@@ -59,7 +52,6 @@ export default {
         twinkle: 'twinkle 4s ease-in-out infinite',
         'glow-pulse': 'glowpulse 7s ease-in-out infinite',
         align: 'align 6s ease-in-out infinite',
-        'constellation-drift': 'constellation-drift 20s ease-in-out infinite',
         'glow-line-pulse': 'glow-line-pulse 4s ease-in-out infinite',
         'star-drift': 'star-drift 8s ease-in-out infinite',
         'logo-float': 'logo-float 10s ease-in-out infinite',

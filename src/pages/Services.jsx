@@ -40,19 +40,20 @@ export default function Services() {
 
       {/* Foreground Content */}
       <div className="relative z-10 pt-20 sm:pt-28 pb-24 px-4 sm:px-6 lg:px-8 max-w-[1400px] mx-auto w-full">
-        <div className="text-center mb-10 sm:mb-16">
+        <div className="text-center mb-6 sm:mb-10">
           <AnimatedTitle
             text="Our Kundli Services"
-            className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold mb-4 sm:mb-6"
+            goldWord="Services"
+            className="text-5xl sm:text-6xl md:text-8xl font-serif font-bold text-center mb-4 sm:mb-8 tracking-wide"
             startDelay={0.1}
           />
-          <p className="text-lg sm:text-xl text-chakra-muted max-w-3xl mx-auto animate-fade-in-up" style={{ animationDelay: '0.9s', animationFillMode: 'both' }}>
+          <p className="text-lg sm:text-xl text-chakra-muted max-w-3xl mx-auto animate-fade-in-up" style={{ animationDelay: '0.6s', animationFillMode: 'both' }}>
             Prepared by expert astrologers, our personalized Patrikas decode the cosmic geometry at the time of your birth. 
             Discover your strengths, anticipate challenges, and align your life with the universe.
           </p>
         </div>
 
-        <div className="animate-fade-in-up" style={{ animationDelay: '1.2s', animationFillMode: 'both' }}>
+        <div className="animate-fade-in-up" style={{ animationDelay: '0.9s', animationFillMode: 'both' }}>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 max-w-6xl mx-auto">
             <ServiceCard 
               title="Birhaat Kundli"
@@ -94,7 +95,7 @@ export default function Services() {
           </div>
 
           {/* What You'll Receive */}
-          <div className="mt-16 sm:mt-24 max-w-5xl mx-auto">
+          <div className="mt-10 sm:mt-16 max-w-5xl mx-auto">
             <h2 className="text-2xl sm:text-3xl font-serif font-bold text-center mb-10 sm:mb-12">What You'll Receive</h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
               <div className="glass-panel rounded-2xl p-6 text-center">
