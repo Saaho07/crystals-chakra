@@ -37,7 +37,7 @@ export default function ServiceCard({ title, price, features, isPopular, oldPric
       
       <div className="text-center mb-6">
         <span className="text-3xl sm:text-4xl font-bold text-white">₹{price}</span>
-        {oldPrice && <span className="text-chakra-muted line-through ml-2">₹{oldPrice}</span>}
+        {oldPrice && <span className="text-chakra-gold/70 line-through ml-2 text-lg">₹{oldPrice}</span>}
       </div>
 
       <div className="flex-1 space-y-3 sm:space-y-4 mb-8">

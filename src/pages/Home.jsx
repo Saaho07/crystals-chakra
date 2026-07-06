@@ -198,19 +198,9 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
             <ServiceCard 
-              title="Birhaat Kundli"
-              price="500"
-              features={[
-                "Life Purpose & Hidden Strengths",
-                "Career Growth & Financial Success",
-                "Marriage & Relationship Insights",
-                "Doshas & Powerful Remedies"
-              ]}
-            />
-            <ServiceCard 
               title="Bhrigu Patrika"
-              price="700"
-              isPopular={true}
+              price="999/-"
+              oldPrice="3000"
               features={[
                 "Detailed Life Analysis",
                 "Past Life Karma Influences",
@@ -219,8 +209,21 @@ export default function Home() {
               ]}
             />
             <ServiceCard 
+              title="Birhaat Kundli"
+              price="699/-"
+              oldPrice="2500"
+              isPopular={true}
+              features={[
+                "Life Purpose & Hidden Strengths",
+                "Career Growth & Financial Success",
+                "Marriage & Relationship Insights",
+                "Doshas & Powerful Remedies"
+              ]}
+            />
+            <ServiceCard 
               title="Parashara Patrika Plus"
-              price="1000"
+              price="1499/-"
+              oldPrice="5000"
               features={[
                 "Complete Astrological Audit",
                 "Detailed Dashas & Transits",

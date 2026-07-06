@@ -29,8 +29,8 @@ const ASTROLOGERS = [
 export default function Services() {
   return (
     <div className="relative min-h-screen bg-chakra-bg overflow-x-hidden flex flex-col">
-      <PageMeta 
-        title="Kundli Services" 
+      <PageMeta
+        title="Kundli Services"
         description="Choose from Birhaat Kundli, Bhrigu Patrika, or Parashara Patrika Plus. Expert astrologers deliver personalized, precision-calculated birth chart readings."
         path="/services"
       />
@@ -48,29 +48,17 @@ export default function Services() {
             startDelay={0.1}
           />
           <p className="text-lg sm:text-xl text-chakra-muted max-w-3xl mx-auto animate-fade-in-up" style={{ animationDelay: '0.6s', animationFillMode: 'both' }}>
-            Prepared by expert astrologers, our personalized Patrikas decode the cosmic geometry at the time of your birth. 
+            Prepared by expert astrologers, our personalized Patrikas decode the cosmic geometry at the time of your birth.
             Discover your strengths, anticipate challenges, and align your life with the universe.
           </p>
         </div>
 
         <div className="animate-fade-in-up" style={{ animationDelay: '0.9s', animationFillMode: 'both' }}>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 max-w-6xl mx-auto">
-            <ServiceCard 
-              title="Birhaat Kundli"
-              price="500"
-              features={[
-                "Basic Life Overview",
-                "Personality & Traits Analysis",
-                "Career & Financial Success",
-                "Marriage & Relationship Insights",
-                "Major Doshas & Basic Remedies",
-                "100% Personalized & Confidential"
-              ]}
-            />
-            <ServiceCard 
+            <ServiceCard
               title="Bhrigu Patrika"
-              price="700"
-              isPopular={true}
+              price="999/-"
+              oldPrice="3000"
               features={[
                 "Everything in Birhaat Kundli",
                 "In-depth Karma & Life Path",
@@ -80,9 +68,24 @@ export default function Services() {
                 "Favorable Timings for Major Decisions"
               ]}
             />
-            <ServiceCard 
+            <ServiceCard
+              title="Birhaat Kundli"
+              price="699/-"
+              oldPrice="2500"
+              isPopular={true}
+              features={[
+                "Basic Life Overview",
+                "Personality & Traits Analysis",
+                "Career & Financial Success",
+                "Marriage & Relationship Insights",
+                "Major Doshas & Basic Remedies",
+                "100% Personalized & Confidential"
+              ]}
+            />
+            <ServiceCard
               title="Parashara Patrika Plus"
-              price="1000"
+              price="1499/-"
+              oldPrice="5000"
               features={[
                 "Complete Astrological Master Blueprint",
                 "Detailed Vimshottari Dasha Analysis",
@@ -120,7 +123,7 @@ export default function Services() {
           <div className="mt-16 sm:mt-24 max-w-5xl mx-auto">
             <h2 className="text-2xl sm:text-3xl font-serif font-bold text-center mb-4">Our Expert Astrologers</h2>
             <p className="text-chakra-muted text-center mb-10 sm:mb-12 text-sm sm:text-base">Every reading is personally crafted by one of our certified Vedic astrologers.</p>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
               {ASTROLOGERS.map((astro, i) => (
                 <div key={i} className="glass-panel rounded-2xl p-6 sm:p-8">
@@ -145,9 +148,9 @@ export default function Services() {
             <p className="text-chakra-muted mb-8 text-sm sm:text-base">
               Not sure which Patrika is right for you? Message our team of expert astrologers on WhatsApp for a free consultation to find the perfect reading for your current life situation.
             </p>
-            <a 
+            <a
               href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hello, I need help choosing a Kundli reading.')}`}
-              target="_blank" 
+              target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-transparent border-2 border-chakra-cyan text-chakra-cyan hover:bg-chakra-cyan hover:text-chakra-bg px-6 sm:px-8 py-3 rounded-full font-bold transition-all"
             >

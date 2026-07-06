@@ -19,7 +19,7 @@ export default function BrandLogo({ className = "", size = "md" }) {
 
   return (
     <div 
-      className={`relative flex items-center justify-center ${currentSize} ${className} transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-110 group-hover:scale-110 group`}
+      className={`relative flex items-center justify-center ${currentSize} ${className} group`}
       style={{ 
         filter: currentFilter,
         willChange: 'filter, transform'

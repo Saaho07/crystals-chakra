@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import OrbitSystem from './OrbitSystem'; // Ensure we can render the spinner
 import ZodiacWheel from './ZodiacWheel';
+import { WHATSAPP_NUMBER } from '../constants';
 
 const reveal = {
   hidden: { opacity: 0, y: 8 },
@@ -183,9 +184,15 @@ export default function ReadingOverlay({
 
                   <div className="mt-8 pt-6 border-t border-chakra-ring text-center">
                     <p className="text-sm text-chakra-muted mb-4">Want the full picture mathematically mapped to your birth chart?</p>
-                    <Link to="/services" onClick={handleClose} className="inline-block w-full bg-gradient-to-r from-chakra-goldLight via-chakra-gold to-chakra-goldLight text-chakra-bg font-bold py-4 rounded-xl shadow-lg transform transition-transform hover:scale-[1.02] active:scale-[0.98]">
+                    <a 
+                      href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi! I'd like to get my full Kundli reading.")}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={handleClose} 
+                      className="inline-block w-full bg-gradient-to-r from-chakra-goldLight via-chakra-gold to-chakra-goldLight text-chakra-bg font-bold py-4 rounded-xl shadow-lg transform transition-transform hover:scale-[1.02] active:scale-[0.98]"
+                    >
                       Get Your Full Kundli Reading
-                    </Link>
+                    </a>
                   </div>
                 </motion.div>
               )}
