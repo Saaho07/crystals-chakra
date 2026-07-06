@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import OrbitSystem from './OrbitSystem'; // Ensure we can render the spinner
 import ZodiacWheel from './ZodiacWheel';
 import { WHATSAPP_NUMBER } from '../constants';
 
