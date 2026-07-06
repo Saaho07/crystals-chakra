@@ -18,9 +18,9 @@ export default function Navbar() {
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-[5rem]">
           <div className="flex items-center gap-2">
-            <Link to="/" className="flex items-center gap-3">
+            <Link to="/" className="flex items-center gap-3 group">
               <BrandLogo size="sm" className="!w-12 !h-12" />
-              <div className="flex flex-col">
+              <div className="flex flex-col transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-110 origin-left">
                 <span className="text-2xl font-serif font-bold text-chakra-cyan leading-none tracking-wide">CRYSTALS <span className="text-white">CHAKRA</span></span>
               </div>
             </Link>
@@ -28,7 +28,7 @@ export default function Navbar() {
           
           {/* Desktop Menu */}
           <div className="hidden md:block">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-4">
               {NAV_LINKS.map((link) => (
                 <Link
                   key={link.to}

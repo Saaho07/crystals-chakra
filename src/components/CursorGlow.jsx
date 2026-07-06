@@ -11,6 +11,7 @@ const CursorGlow = memo(function CursorGlow() {
   const rafId = useRef(null);
   const visible = useRef(false);
   const lastTime = useRef(0);
+  const currentSize = useRef(28);
 
   // Single RAF loop — framerate-independent for 120hz smoothness
   const tick = useCallback((timestamp) => {
@@ -22,8 +23,13 @@ const CursorGlow = memo(function CursorGlow() {
     ringPos.current.x += (pos.current.x - ringPos.current.x) * ringLerp;
     ringPos.current.y += (pos.current.y - ringPos.current.y) * ringLerp;
 
+    const targetSize = hovering.current ? 48 : 28;
+    // Smoother lerp for size (springy feel)
+    const sizeLerp = 1 - Math.pow(0.005, dt);
+    currentSize.current += (targetSize - currentSize.current) * sizeLerp;
+
     if (ringRef.current) {
-      const size = hovering.current ? 48 : 28;
+      const size = currentSize.current;
       ringRef.current.style.transform = `translate(${ringPos.current.x - size / 2}px, ${ringPos.current.y - size / 2}px)`;
       ringRef.current.style.width = `${size}px`;
       ringRef.current.style.height = `${size}px`;
@@ -86,7 +92,7 @@ const CursorGlow = memo(function CursorGlow() {
           width: 28,
           height: 28,
           opacity: 0,
-          transition: 'width 0.15s, height 0.15s, background-color 0.15s',
+          transition: 'background-color 0.15s',
           willChange: 'transform',
         }}
       />

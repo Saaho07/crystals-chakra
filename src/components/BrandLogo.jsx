@@ -19,16 +19,12 @@ export default function BrandLogo({ className = "", size = "md" }) {
 
   return (
     <div 
-      className={`relative flex items-center justify-center ${currentSize} ${className} group`}
+      className={`relative flex items-center justify-center ${currentSize} ${className} transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-110 group-hover:scale-110 group`}
       style={{ 
         filter: currentFilter,
-        willChange: 'filter'
+        willChange: 'filter, transform'
       }}
     >
-      {/* Hover shine overlay */}
-      <div className="absolute inset-0 z-50 pointer-events-none overflow-hidden rounded-lg">
-        <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/30 to-transparent -translate-x-full group-hover:animate-[shine_1.5s_ease-in-out]" />
-      </div>
 
       <svg 
         viewBox="360 300 360 360" 

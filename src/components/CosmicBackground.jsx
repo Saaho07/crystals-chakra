@@ -119,9 +119,13 @@ const CosmicBackground = memo(function CosmicBackground() {
       // Batch rendering by colour to reduce state changes
       for (let i = 0; i < STAR_COUNT; i++) {
         const s = bgStars[i]
-        // Only the largest forefront stars (depth < 0.3) move with the cursor, the rest stay perfectly still
-        const parallaxStrength = s.depth < 0.3 ? (0.3 - s.depth) * 80 : 0
-        const px = s.x * w + cx * parallaxStrength
+        // Increase the number of stars that move (depth < 0.4) and slightly increase their movement multiplier
+        const parallaxStrength = s.depth < 0.4 ? (0.4 - s.depth) * 120 : 0
+        // Add a very slow constant horizontal drift over time based on depth, and wrap around
+        const drift = t * (1.2 - s.depth) * 3
+        let px = s.x * w + cx * parallaxStrength + drift
+        px = ((px % w) + w) % w // seamless horizontal wrap
+        
         const py = s.y * h + cy * parallaxStrength * 0.6 - scrollOffset * (0.2 + s.depth * 0.4)
 
         if (py < -5 || py > h + 5 || px < -5 || px > w + 5) continue

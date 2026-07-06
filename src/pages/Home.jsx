@@ -184,7 +184,7 @@ export default function Home() {
       {/* Services Preview Section — transparent, no separate bg */}
       <section className="relative z-10 py-20 sm:py-28 bg-chakra-surface/50 border-t border-b border-white/5 backdrop-blur-sm overflow-hidden">
         {/* Zodiac wheel spanning full viewport width */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.08] overflow-visible">
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.15] overflow-visible">
           <div className="w-[100vw] h-[100vw] flex items-center justify-center">
             <ZodiacWheel size={2000} className="min-w-[100vw] min-h-[100vw]" />
           </div>

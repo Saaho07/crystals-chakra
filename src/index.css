@@ -6,7 +6,6 @@
 
 html, body, #root {
   min-height: 100%;
-  overscroll-behavior: none;
 }
 
 body {
@@ -17,7 +16,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  overscroll-behavior: none;
   -webkit-user-select: none;
   user-select: none;
 }
@@ -64,7 +62,7 @@ body {
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.1);
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   letter-spacing: 0.02em;
 }
 
@@ -85,6 +83,8 @@ body {
   background: rgba(37, 169, 186, 0.12);
   border-color: rgba(37, 169, 186, 0.3);
   box-shadow: 0 0 16px rgba(37, 169, 186, 0.15), inset 0 0 8px rgba(37, 169, 186, 0.05);
+  font-size: 1.01rem;
+  padding: 0.6rem 1.6rem;
 }
 
 /* Respect reduced motion preferences */
