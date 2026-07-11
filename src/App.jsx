@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import SideNav from './components/SideNav';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 import CursorGlow from './components/CursorGlow';
@@ -17,6 +18,7 @@ export default function App() {
       <CursorGlow />
       <div className="flex flex-col min-h-screen">
         <Navbar />
+        <SideNav />
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<Home />} />

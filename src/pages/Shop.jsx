@@ -65,11 +65,11 @@ export default function Shop() {
           <AnimatedTitle
             text="Crystals & Tools"
             goldWord="Tools"
-            className="text-5xl sm:text-6xl md:text-8xl font-serif font-bold text-center mb-4 sm:mb-8 tracking-wide"
+            className="text-4xl sm:text-5xl md:text-7xl font-serif font-bold text-center mb-4 sm:mb-8 tracking-wide"
             startDelay={0.1}
           />
 
-          <p className="text-lg sm:text-xl text-chakra-muted max-w-3xl mx-auto mb-8 sm:mb-12 animate-fade-in-up" style={{ animationDelay: '0.6s', animationFillMode: 'both' }}>
+          <p className="text-base sm:text-lg md:text-xl text-chakra-muted max-w-3xl mx-auto mb-8 sm:mb-12 animate-fade-in-up leading-relaxed" style={{ animationDelay: '0.6s', animationFillMode: 'both' }}>
             We're curating a collection of high-vibration crystal wristbands matched to your specific planetary alignments. Be the first to know when we launch.
           </p>
         </div>

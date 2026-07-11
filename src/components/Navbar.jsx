@@ -18,27 +18,12 @@ export default function Navbar() {
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-[5rem]">
           <div className="flex items-center gap-2">
-            <Link to="/" className="flex items-center gap-3">
-              <BrandLogo size="sm" className="!w-12 !h-12" />
+            <Link to="/" className="flex items-center gap-2 sm:gap-3">
+              <BrandLogo size="sm" className="!w-10 !h-10 sm:!w-12 sm:!h-12" />
               <div className="flex flex-col">
-                <span className="text-2xl font-serif font-bold text-chakra-cyan leading-none tracking-wide">CRYSTALS <span className="text-white">CHAKRA</span></span>
+                <span className="text-xl sm:text-2xl font-serif font-bold text-chakra-cyan leading-none tracking-wide">CRYSTALS <span className="text-white">CHAKRA</span></span>
               </div>
             </Link>
-          </div>
-          
-          {/* Desktop Menu */}
-          <div className="hidden md:block">
-            <div className="flex items-center gap-4">
-              {NAV_LINKS.map((link) => (
-                <Link
-                  key={link.to}
-                  to={link.to}
-                  className={`nav-pill ${location.pathname === link.to ? 'active' : ''}`}
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
           </div>
           
           {/* Mobile menu button */}
@@ -47,7 +32,7 @@ export default function Navbar() {
               onClick={() => setIsOpen(!isOpen)}
               className="text-chakra-text hover:text-chakra-cyan p-2"
             >
-              {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
           </div>
         </div>
@@ -62,7 +47,7 @@ export default function Navbar() {
                 key={link.to}
                 to={link.to}
                 onClick={() => setIsOpen(false)}
-                className={`nav-pill block text-center ${location.pathname === link.to ? 'active' : ''}`}
+                className={`block text-center py-3 px-4 rounded-xl text-sm font-medium transition-colors ${location.pathname === link.to ? 'text-chakra-cyan bg-chakra-cyan/10' : 'text-chakra-muted hover:text-white'}`}
               >
                 {link.label}
               </Link>

@@ -11,19 +11,19 @@ const CursorGlow = memo(function CursorGlow() {
   const rafId = useRef(null);
   const visible = useRef(false);
   const lastTime = useRef(0);
-  const currentSize = useRef(28);
+  const currentSize = useRef(36);
 
   // Single RAF loop — framerate-independent for 120hz smoothness
   const tick = useCallback((timestamp) => {
     const dt = lastTime.current ? Math.min((timestamp - lastTime.current) / 1000, 0.05) : 0.016;
     lastTime.current = timestamp;
 
-    // Framerate-independent lerp — feels identical at 60/120/144hz
-    const ringLerp = 1 - Math.pow(0.001, dt); // ~0.22 at 60fps, proportionally faster at 120fps
+    // Framerate-independent lerp — very tight follow
+    const ringLerp = 1 - Math.pow(0.0000001, dt);
     ringPos.current.x += (pos.current.x - ringPos.current.x) * ringLerp;
     ringPos.current.y += (pos.current.y - ringPos.current.y) * ringLerp;
 
-    const targetSize = hovering.current ? 48 : 28;
+    const targetSize = hovering.current ? 56 : 36;
     // Smoother lerp for size (springy feel)
     const sizeLerp = 1 - Math.pow(0.005, dt);
     currentSize.current += (targetSize - currentSize.current) * sizeLerp;
@@ -38,7 +38,6 @@ const CursorGlow = memo(function CursorGlow() {
 
     if (dotRef.current) {
       dotRef.current.style.transform = `translate(${pos.current.x - 3}px, ${pos.current.y - 3}px)`;
-      dotRef.current.style.opacity = hovering.current ? '0' : '1';
     }
 
     rafId.current = requestAnimationFrame(tick);

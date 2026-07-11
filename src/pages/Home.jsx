@@ -9,6 +9,7 @@ import ZodiacWheel from '../components/ZodiacWheel';
 import PageMeta from '../components/PageMeta';
 import AnimatedTitle from '../components/AnimatedTitle';
 import { generateCosmicState, generateReading, PATTERN_THEMES } from '../readingEngine';
+import { WHATSAPP_NUMBER, WHATSAPP_DISPLAY, SUPPORT_EMAIL } from '../constants';
 
 const TESTIMONIALS = [
   {
@@ -181,8 +182,8 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* Services Preview Section — transparent, no separate bg */}
-      <section className="relative z-10 py-20 sm:py-28 bg-chakra-surface/50 border-t border-b border-white/5 backdrop-blur-sm overflow-hidden">
+      {/* Services Preview Section */}
+      <section className="relative z-10 py-20 sm:py-28 bg-chakra-surface/15 backdrop-blur-[2px] border-t border-b border-white/5 overflow-hidden">
         {/* Zodiac wheel spanning full viewport width */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.15] overflow-visible">
           <div className="w-[100vw] h-[100vw] flex items-center justify-center">
@@ -268,18 +269,63 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FAQ Section — transparent, no separate bg */}
-      <section className="relative z-10 py-20 sm:py-28">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12 sm:mb-20">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold mb-5">Frequently Asked Questions</h2>
-            <p className="text-chakra-muted text-base sm:text-lg">Everything you need to know before ordering your reading.</p>
-          </div>
+      {/* FAQ & Contact Section — side by side cards */}
+      <section className="relative z-10 py-16 sm:py-24">
+        <div className="max-w-[1100px] mx-auto px-4 sm:px-6 lg:px-8">
 
-          <div className="glass-panel rounded-2xl p-4 sm:p-8">
-            {FAQ_ITEMS.map((item, i) => (
-              <FAQItem key={i} item={item} />
-            ))}
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 items-stretch">
+            {/* FAQ Card — Left, takes 3/5 */}
+            <div className="lg:col-span-3 bg-chakra-surface/40 backdrop-blur-xl border border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.5)] rounded-2xl p-5 sm:p-7">
+              <h3 className="text-lg sm:text-xl font-serif font-bold text-white mb-0.5">Common Questions</h3>
+              <p className="text-chakra-muted text-xs mb-5">Everything you need to know before ordering.</p>
+              <div className="divide-y divide-white/10">
+                {FAQ_ITEMS.map((item, i) => (
+                  <FAQItem key={i} item={item} />
+                ))}
+              </div>
+            </div>
+
+            {/* Contact Card — Right, takes 2/5 */}
+            <div className="lg:col-span-2 bg-chakra-surface/40 backdrop-blur-xl border border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.5)] rounded-2xl p-5 sm:p-7 flex flex-col">
+              <h3 className="text-lg sm:text-xl font-serif font-bold text-white mb-0.5">Get in Touch</h3>
+              <p className="text-chakra-muted text-xs mb-5">Need help choosing a reading? We're here for you.</p>
+
+              <div className="space-y-5 flex-1">
+                <div>
+                  <h4 className="text-chakra-cyan font-semibold text-xs mb-2 uppercase tracking-widest">WhatsApp</h4>
+                  <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noopener noreferrer" className="text-white hover:text-chakra-cyan transition-colors text-base font-medium">
+                    {WHATSAPP_DISPLAY}
+                  </a>
+                </div>
+
+                <div>
+                  <h4 className="text-chakra-cyan font-semibold text-xs mb-2 uppercase tracking-widest">Email</h4>
+                  <a href={`mailto:${SUPPORT_EMAIL}`} className="text-white hover:text-chakra-cyan transition-colors text-base font-medium">
+                    {SUPPORT_EMAIL}
+                  </a>
+                </div>
+
+                <div>
+                  <h4 className="text-chakra-cyan font-semibold text-xs mb-2 uppercase tracking-widest">Quick Links</h4>
+                  <ul className="space-y-2.5">
+                    <li><Link to="/services" className="text-chakra-muted hover:text-chakra-cyan text-sm transition-colors">Kundli Services</Link></li>
+                    <li><Link to="/science" className="text-chakra-muted hover:text-chakra-cyan text-sm transition-colors">Science of Astrology</Link></li>
+                    <li><Link to="/shop" className="text-chakra-muted hover:text-chakra-cyan text-sm transition-colors">Shop</Link></li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="mt-5 pt-4 border-t border-white/10">
+                <a
+                  href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hi! I have a question about your Kundli readings.')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block w-full text-center bg-gradient-to-r from-chakra-goldLight via-chakra-gold to-chakra-goldLight text-chakra-bg font-bold py-3 rounded-xl shadow-lg transform transition-transform hover:scale-[1.02] active:scale-[0.98]"
+                >
+                  Message Us on WhatsApp
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </section>

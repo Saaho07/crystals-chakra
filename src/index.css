@@ -36,56 +36,6 @@ body {
   }
 }
 
-@keyframes shine {
-  100% {
-    transform: translateX(100%);
-  }
-}
-
-/* Constellation glow filter — used by SVG lines */
-.constellation-glow {
-  filter: drop-shadow(0 0 6px rgba(37, 169, 186, 0.6)) drop-shadow(0 0 12px rgba(37, 169, 186, 0.3));
-}
-
-.constellation-star-glow {
-  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.8)) drop-shadow(0 0 8px rgba(37, 169, 186, 0.5));
-}
-
-/* Navbar pill button styles */
-.nav-pill {
-  position: relative;
-  padding: 0.55rem 1.5rem;
-  border-radius: 9999px;
-  font-size: 0.938rem;
-  font-weight: 500;
-  color: #94A3B8;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  letter-spacing: 0.02em;
-}
-
-.nav-pill:hover {
-  color: #25A9BA;
-  background: rgba(37, 169, 186, 0.1);
-  border-color: rgba(37, 169, 186, 0.25);
-  box-shadow: 0 0 12px rgba(37, 169, 186, 0.12), inset 0 0 12px rgba(37, 169, 186, 0.04);
-  transform: translateY(-1px);
-}
-
-.nav-pill:active {
-  transform: translateY(0px) scale(0.97);
-}
-
-.nav-pill.active {
-  color: #25A9BA;
-  background: rgba(37, 169, 186, 0.12);
-  border-color: rgba(37, 169, 186, 0.3);
-  box-shadow: 0 0 16px rgba(37, 169, 186, 0.15), inset 0 0 8px rgba(37, 169, 186, 0.05);
-  font-size: 1.01rem;
-  padding: 0.6rem 1.6rem;
-}
 
 /* Respect reduced motion preferences */
 @media (prefers-reduced-motion: reduce) {
