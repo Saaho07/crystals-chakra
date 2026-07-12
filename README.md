@@ -2,6 +2,11 @@
 
 A modern web application for Vedic astrology readings, offering users a free "Cosmic Snapshot" preview feature based on their Zodiac and Numerology Life Path.
 
+## About This Project
+Built as a freelance client project for a Vedic astrology consultancy. 
+Solo-developed end to end — UI/UX, architecture, and the client-side 
+zodiac/numerology calculation engine (`src/cosmicEngine.js`).
+
 ## Key Features
 - **Cosmic Snapshot Calculator**: Real-time client-side calculation of Zodiac signs (handling edge cases like Capricorn wraparounds) and Numerology Life Paths (preserving Master Numbers 11, 22, 33).
 - **Service Catalog**: Browse in-depth astrological services like complete Kundli readings and Bhrigu Patrikas.
