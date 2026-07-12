@@ -8,7 +8,7 @@ Solo-developed end to end — UI/UX, architecture, and the client-side
 zodiac/numerology calculation engine (`src/cosmicEngine.js`).
 
 ## Key Features
-- **Cosmic Snapshot Calculator**: Real-time client-side calculation of Zodiac signs (handling edge cases like Capricorn wraparounds) and Numerology Life Paths (preserving Master Numbers 11, 22, 33).
+- **Cosmic Snapshot Calculator**: Real-time client-side calculation of Zodiac signs and Numerology Life Paths.
 - **Service Catalog**: Browse in-depth astrological services like complete Kundli readings and Bhrigu Patrikas.
 - **WhatsApp Integration**: Seamless direct-to-whatsapp ordering flow for personalized readings.
 - **Science & Credibility**: Dedicated section explaining the mathematical and psychological foundations of Vedic astrology.
