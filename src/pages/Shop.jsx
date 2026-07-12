@@ -65,7 +65,7 @@ export default function Shop() {
           <AnimatedTitle
             text="Crystals & Tools"
             goldWord="Tools"
-            className="text-4xl sm:text-5xl md:text-7xl font-serif font-bold text-center mb-4 sm:mb-8 tracking-wide"
+            className="text-5xl sm:text-6xl md:text-8xl font-serif font-bold text-center mb-4 sm:mb-8 tracking-wide"
             startDelay={0.1}
           />
 

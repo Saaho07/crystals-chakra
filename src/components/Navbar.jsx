@@ -16,16 +16,16 @@ export default function Navbar() {
   return (
     <nav className="fixed top-0 w-full z-50 glass-panel border-b border-white/10">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-[5rem]">
+        <div className="flex items-center justify-between h-16">
           <div className="flex items-center gap-2">
-            <Link to="/" className="flex items-center gap-2 sm:gap-3">
+            <Link to="/" className="flex items-center gap-1 sm:gap-2">
               <BrandLogo size="sm" className="!w-10 !h-10 sm:!w-12 sm:!h-12" />
               <div className="flex flex-col">
                 <span className="text-xl sm:text-2xl font-serif font-bold text-chakra-cyan leading-none tracking-wide">CRYSTALS <span className="text-white">CHAKRA</span></span>
               </div>
             </Link>
           </div>
-          
+
           {/* Mobile menu button */}
           <div className="md:hidden">
             <button

@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link } from 'react-router-dom';
 import ZodiacWheel from './ZodiacWheel';
 import { WHATSAPP_NUMBER } from '../constants';
 
@@ -17,11 +16,10 @@ const LOADING_TEXTS = [
 
 export default function ReadingOverlay({ 
   isOpen, 
-  lines, 
-  theme, 
+  reading,
   onClose, 
-  onGenerate, // new prop to trigger calculation
-  userData // passes back the submitted name
+  onGenerate,
+  userData
 }) {
   const [step, setStep] = useState('input'); // input, calculating, reading
   const [formData, setFormData] = useState({ name: '', dob: '' });
@@ -72,7 +70,7 @@ export default function ReadingOverlay({
             onClick={handleClose}
           />
           <motion.div
-            className={`fixed bottom-0 left-0 right-0 z-40 rounded-t-3xl bg-chakra-bg border-t border-chakra-ring px-6 pt-5 pb-8 max-w-2xl mx-auto shadow-[0_-10px_40px_rgba(37,169,186,0.15)] flex flex-col ${step === 'calculating' ? 'items-center justify-center min-h-[400px]' : ''}`}
+            className={`fixed bottom-0 left-0 right-0 z-40 rounded-t-3xl bg-chakra-bg border-t border-chakra-ring px-5 pt-4 pb-6 max-w-2xl mx-auto shadow-[0_-10px_40px_rgba(37,169,186,0.15)] flex flex-col ${step === 'calculating' ? 'items-center justify-center min-h-[400px]' : ''} ${step === 'reading' ? 'max-h-[90vh]' : ''}`}
             initial={{ y: '100%' }}
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
@@ -82,7 +80,7 @@ export default function ReadingOverlay({
             {step !== 'calculating' && (
               <div className="flex justify-between items-center mb-6">
                 <span className="text-xs uppercase tracking-[0.2em] text-chakra-cyan font-bold">
-                  {step === 'input' ? 'Cosmic Snapshot' : `${userData?.name || 'Your'} Cosmic Snapshot`}
+                  {step === 'input' ? 'Cosmic Snapshot' : (userData?.name || 'Your Reading')}
                 </span>
                 <button onClick={handleClose} aria-label="Close" className="text-chakra-muted hover:text-white transition-colors text-xl leading-none p-2 -mr-2">
                   ✕
@@ -155,40 +153,90 @@ export default function ReadingOverlay({
               )}
 
               {/* STEP 3: READING */}
-              {step === 'reading' && lines && lines.length > 0 && (
+              {step === 'reading' && reading && (
                 <motion.div
                   key="reading"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4 }}
+                  className="flex flex-col min-h-0 flex-1"
                 >
-                  <div className="mb-4 inline-block bg-white/5 border border-white/10 px-3 py-1 rounded-full text-xs text-chakra-gold">
-                    Dominant Pattern: {theme}
-                  </div>
-                  
-                  <div className="space-y-4 min-h-[120px]">
-                    {lines.map((line, i) => (
-                      <motion.p
-                        key={i}
-                        custom={i}
-                        variants={reveal}
-                        initial="hidden"
-                        animate="visible"
-                        className="text-base sm:text-lg text-white leading-relaxed"
-                      >
-                        {line}
-                      </motion.p>
-                    ))}
+                  {/* Scrollable reading content */}
+                  <div className="overflow-y-auto flex-1 min-h-0 pr-1">
+                    {/* ── Zodiac Section ── */}
+                    <div className="mb-3 sm:mb-4">
+                      <div className="flex items-baseline gap-2 mb-1">
+                        <span className="text-xl sm:text-2xl font-serif font-bold gold-gradient-text">{reading.zodiac.name}</span>
+                        <span className="text-xs sm:text-sm text-chakra-muted">
+                          {reading.zodiac.element} · {reading.zodiac.rulingPlanet}
+                        </span>
+                      </div>
+
+                      <div className="space-y-2 mt-2">
+                        {reading.zodiac.lines.map((line, i) => (
+                          <motion.p
+                            key={`z-${i}`}
+                            custom={i}
+                            variants={reveal}
+                            initial="hidden"
+                            animate="visible"
+                            className="text-sm sm:text-base text-white/90 leading-snug"
+                          >
+                            {line}
+                          </motion.p>
+                        ))}
+                      </div>
+
+                      <div className="flex flex-wrap gap-1.5 mt-2.5">
+                        {reading.zodiac.traits.map((trait, i) => (
+                          <span key={i} className="bg-white/5 border border-white/10 px-2 py-0.5 rounded-full text-[10px] sm:text-xs text-chakra-muted">
+                            {trait}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* ── Numerology Section ── */}
+                    <div className="pt-3 sm:pt-4 border-t border-white/10">
+                      <div className="flex items-baseline gap-2 mb-1">
+                        <span className="text-xl sm:text-2xl font-serif font-bold gold-gradient-text">{reading.numerology.name}</span>
+                        <span className="text-xs sm:text-sm text-chakra-muted">Life Path · <span className="text-sm sm:text-base font-semibold text-white">{reading.numerology.number}</span></span>
+                      </div>
+
+                      <div className="space-y-2 mt-2">
+                        {reading.numerology.lines.map((line, i) => (
+                          <motion.p
+                            key={`n-${i}`}
+                            custom={i + reading.zodiac.lines.length}
+                            variants={reveal}
+                            initial="hidden"
+                            animate="visible"
+                            className="text-sm sm:text-base text-white/90 leading-snug"
+                          >
+                            {line}
+                          </motion.p>
+                        ))}
+                      </div>
+
+                      <div className="flex flex-wrap gap-1.5 mt-2.5">
+                        {reading.numerology.traits.map((trait, i) => (
+                          <span key={i} className="bg-white/5 border border-white/10 px-2 py-0.5 rounded-full text-[10px] sm:text-xs text-chakra-muted">
+                            {trait}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="mt-8 pt-6 border-t border-chakra-ring text-center">
-                    <p className="text-sm text-chakra-muted mb-4">Want the full picture mathematically mapped to your birth chart?</p>
+                  {/* ── WhatsApp CTA — always visible at bottom ── */}
+                  <div className="mt-4 pt-4 border-t border-chakra-ring text-center shrink-0">
+                    <p className="text-xs sm:text-sm text-chakra-muted mb-2 sm:mb-3">Want the full picture mathematically mapped to your birth chart?</p>
                     <a 
                       href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi! I'd like to get my full Kundli reading.")}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={handleClose} 
-                      className="inline-block w-full bg-gradient-to-r from-chakra-goldLight via-chakra-gold to-chakra-goldLight text-chakra-bg font-bold py-4 rounded-xl shadow-lg transform transition-transform hover:scale-[1.02] active:scale-[0.98]"
+                      className="inline-block w-full bg-gradient-to-r from-chakra-goldLight via-chakra-gold to-chakra-goldLight text-chakra-bg font-bold py-3 sm:py-3.5 rounded-xl shadow-lg transform transition-transform hover:scale-[1.02] active:scale-[0.98] text-sm sm:text-base"
                     >
                       Get Your Full Kundli Reading
                     </a>
@@ -202,3 +250,4 @@ export default function ReadingOverlay({
     </AnimatePresence>
   );
 }
+

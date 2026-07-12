@@ -8,7 +8,7 @@ import ReadingOverlay from '../components/ReadingOverlay';
 import ZodiacWheel from '../components/ZodiacWheel';
 import PageMeta from '../components/PageMeta';
 import AnimatedTitle from '../components/AnimatedTitle';
-import { generateCosmicState, generateReading, PATTERN_THEMES } from '../readingEngine';
+import { generateCosmicReading } from '../cosmicEngine';
 import { WHATSAPP_NUMBER, WHATSAPP_DISPLAY, SUPPORT_EMAIL } from '../constants';
 
 const TESTIMONIALS = [
@@ -77,8 +77,7 @@ function FAQItem({ item }) {
 
 export default function Home() {
   const [isOpen, setIsOpen] = useState(false);
-  const [cosmicState, setCosmicState] = useState(null);
-  const [readingLines, setReadingLines] = useState([]);
+  const [cosmicReading, setCosmicReading] = useState(null);
   const [userData, setUserData] = useState(null);
 
   // Calculate when the title animation finishes so subsequent elements can sequence after it
@@ -92,15 +91,13 @@ export default function Home() {
 
   const handleGenerate = (data) => {
     setUserData(data);
-    const inputString = `${data.name}-${data.dob}`;
-    const state = generateCosmicState(inputString);
-    setCosmicState(state);
-    setReadingLines(generateReading(state, 'neutral'));
+    const reading = generateCosmicReading(data.dob, data.name);
+    setCosmicReading(reading);
   };
 
   const handleClose = () => {
     setIsOpen(false);
-    setCosmicState(null);
+    setCosmicReading(null);
   };
 
   return (
@@ -332,8 +329,7 @@ export default function Home() {
 
       <ReadingOverlay
         isOpen={isOpen}
-        lines={readingLines}
-        theme={cosmicState ? PATTERN_THEMES[cosmicState.activeConstellation] : ''}
+        reading={cosmicReading}
         onClose={handleClose}
         onGenerate={handleGenerate}
         userData={userData}
