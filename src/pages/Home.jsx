@@ -81,8 +81,6 @@ export default function Home() {
   const [userData, setUserData] = useState(null);
 
   // Calculate when the title animation finishes so subsequent elements can sequence after it
-  const heroTitle = 'Unlock Your Destiny';
-  const totalChars = heroTitle.length;
   const titleAnimEnd = 0.3 + 0.8 - 0.2; // startDelay + text anim - overlap buffer
 
   const handleOpenModal = () => {

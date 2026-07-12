@@ -225,7 +225,8 @@ const SIGN_ORDER = [
 export function getZodiacSign(month, day) {
   // Capricorn wraps: Dec 22 → Jan 19
   const cap = ZODIAC_DATA.capricorn;
-  if ((month === 12 && day >= 22) || (month === 1 && day <= 19)) {
+  const [[capStartMonth, capStartDay], [capEndMonth, capEndDay]] = cap.dateRange;
+  if ((month === capStartMonth && day >= capStartDay) || (month === capEndMonth && day <= capEndDay)) {
     return 'capricorn';
   }
 
@@ -274,10 +275,21 @@ export function getLifePathNumber(year, month, day) {
  * DOB is parsed manually (no new Date()) per constraint #3.
  */
 export function generateCosmicReading(dobString, name) {
+  if (!dobString || typeof dobString !== 'string') {
+    return null;
+  }
+
   const parts = dobString.split('-');
   const year = parseInt(parts[0], 10);
   const month = parseInt(parts[1], 10);
   const day = parseInt(parts[2], 10);
+
+  if (
+    !Number.isInteger(year) || !Number.isInteger(month) || !Number.isInteger(day) ||
+    month < 1 || month > 12 || day < 1 || day > 31
+  ) {
+    return null;
+  }
 
   const signKey = getZodiacSign(month, day);
   const sign = ZODIAC_DATA[signKey];
